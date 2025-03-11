@@ -5,11 +5,11 @@ const userControllers=require('../controllers/user.controllers')
 
 router.post('/register',[
     body('email').isEmail().withMessage('Invalid Email'),
-    body('firstName').isLength({min:3}).withMessage('FirstName should be atleast 3 characters'),
+    body('fullname.firstname').isLength({ min: 3 }).withMessage('First name must be at least 3 characters long'),
     body('password').isLength({min:5}).withMessage('Password should be atleast 5 characters')
 ],
 userControllers.registerUser
 )
 
 
-modules.exports=router;
+module.exports=router;
