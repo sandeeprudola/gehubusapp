@@ -18,12 +18,96 @@ The request body should be a JSON object with the following fields:
 - `email`: A string representing the user's email address (required, must be a valid email).
 - `password`: A string with a minimum length of 5 characters (required).
 
-### Example:
-- 'user' (object):
-    - 'fullname' (object).
-        - 'firstname' (string): User's first name (minimum 3 characters).
-        - 'lastname' (string): User's last name (minimum 3 characters).
-    -'email' (string): User's email address (must be a valid email).
-    - 'password' (string): User's password (minimum 6 characters).
-- 'token' (String): JWT Token
+Example:
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
 
+# User Login Endpoint
+
+## Endpoint: `/users/login`
+
+### Method: POST
+
+### Description:
+This endpoint is used to log in an existing user. It validates the input data and returns an authentication token if the credentials are correct.
+
+### Request Body:
+The request body should be a JSON object with the following fields:
+
+- `email`: A string representing the user's email address (required, must be a valid email).
+- `password`: A string with a minimum length of 5 characters (required).
+
+Example:
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Response:
+The response will be a JSON object containing the authentication token and user details.
+
+Example:
+```json
+{
+  "token": "your-authentication-token",
+  "user": {
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com"
+  }
+}
+```
+
+# User Profile Endpoint
+
+## Endpoint: `/users/profile`
+
+### Method: GET
+
+### Description:
+This endpoint retrieves the profile information of the authenticated user.
+
+### Authentication:
+Requires a valid JWT token in the Authorization header or cookies.
+
+### Response:
+
+#### Success (200 OK):
+```json
+{
+  "_id": "user-id",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com"
+}
+```
+# User Logout Endpoint
+
+## Endpoint: `/users/logout`
+
+### Method: GET
+
+### Description:
+This endpoint logs out the currently authenticated user by clearing the authentication token cookie and blacklisting the token.
+
+### Authentication:
+Requires a valid JWT token in the Authorization header or cookies.
+
+### Response:
+```json
+{
+  "message": "logged out successfully"
+}
+```
