@@ -111,3 +111,45 @@ Requires a valid JWT token in the Authorization header or cookies.
   "message": "logged out successfully"
 }
 ```
+
+# Captain API Documentation
+
+## Captain Registration Endpoint
+
+### Endpoint: `/captains/register`
+
+### Method: POST
+
+### Description:
+This endpoint is used to register a new captain. It validates the input data and creates a new captain in the database.
+
+### Request Body:
+The request body should be a JSON object with the following fields:
+
+- `fullname`: An object containing:
+  - `firstname`: A string with a minimum length of 3 characters (required).
+  - `lastname`: A string (optional).
+- `email`: A string representing the captain's email address (required, must be a valid email).
+- `password`: A string with a minimum length of 5 characters (required).
+- `vehicle`: An object containing:
+  - `colour`: A string with a minimum length of 3 characters (required).
+  - `plate`: A string with a minimum length of 3 characters (required).
+  - `capacity`: An integer with a minimum value of 1 (required).
+  - `vehicleType`: A string that must be "bus" (required).
+
+Example:
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "colour": "Red",
+    "plate": "ABC123",
+    "capacity": 50,
+    "vehicleType": "bus"
+  }
+}
