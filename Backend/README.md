@@ -153,3 +153,18 @@ Example:
     "vehicleType": "bus"
   }
 }
+```
+### Respose Body:
+The response body should be a JSON object with the following fields:
+
+- `captain`(object):
+  -`fullname`(object):
+    - `firstname`(string):captain's firstname.
+    - `lastname`(string):captain's lastname.
+- `email`(string): A string representing the captain's email address.
+- `password`(string): A string with a minimum length of 5 characters.
+- `vehicle`(object):
+  - `colour`(string): A string with a minimum length of 3 characters. 
+  - `plate`(string): A string with a minimum length of 3 characters.
+  - `capacity`(number): An integer with a minimum value of 1.
+  - `vehicleType`(string): A string that must be "bus".

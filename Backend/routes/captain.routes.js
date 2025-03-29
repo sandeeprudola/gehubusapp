@@ -18,6 +18,13 @@
 
 );
 
+router.post('/login',[
+    body('email').isEmail().withMessage('Invalid email'),
+    body('password').isLength({min:5}).withMessage('Password should be atleast 5 characters')
+],
+    captainControllers.loginCaptain
+);
+
 
 
  module.exports=router;
