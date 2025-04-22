@@ -1,9 +1,9 @@
 const captainModel = require('../models/captain.model');
-const captainService = require('../services/captain.service');
-const { validationResult } = require('express-validator');
+ const captainService = require('../services/captain.service');
+ const { validationResult } = require('express-validator');
 
 
-module.exports.registerCaptain = async (req, res,next) => {
+ module.exports.registerCaptain = async (req, res,next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -27,7 +27,7 @@ module.exports.registerCaptain = async (req, res,next) => {
         colour: vehicle.colour,
         plate: vehicle.plate,
         capacity: vehicle.capacity,
-        vehicleType: vehicle.vehicleType
+        vehicleType: vehicleType
     });
 
     const token=captain.generateAuthToken();
@@ -58,3 +58,21 @@ module.exports.loginCaptain = async (req, res,nect) => {
 
     res.status(200).json({token,captain});
 }
+
+// New controller function for updating location
+module.exports.updateLocation = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { lat, long } = req.body;
+
+    console.log('Received location update:');
+    console.log('Latitude:', lat);
+    console.log('Longitude:', long);
+
+    // for now just a success response
+    res.status(200).json({ message: 'Location updated successfully' });
+
+};
