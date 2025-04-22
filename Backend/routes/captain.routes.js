@@ -1,8 +1,7 @@
- const captainControllers=require('../controllers/captain.controllers');
+const captainControllers=require('../controllers/captain.controllers');
  const express=require('express');
  const router=express.Router();
  const {body}=require('express-validator') 
-
 
 
  router.post('/register',[
@@ -25,6 +24,13 @@ router.post('/login',[
     captainControllers.loginCaptain
 );
 
+// New route for updating location
+router.post('/update-location', [
+    body('lat').isNumeric().withMessage('Latitude must be a number'),
+    body('long').isNumeric().withMessage('Longitude must be a number')
+],
+    captainControllers.updateLocation
+);
 
 
  module.exports=router;
