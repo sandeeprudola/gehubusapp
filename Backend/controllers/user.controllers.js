@@ -31,6 +31,11 @@ module.exports.registerUser = async (req, res, next) => {
 
     res.status(201).json({ token, user });
 
+
+}
+
+
+
 module.exports.loginUser = async (req,res,next) => {
     const errors=validationResult(req);
     if(!errors.isEmpty()){
