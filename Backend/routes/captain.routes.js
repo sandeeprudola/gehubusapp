@@ -2,6 +2,7 @@
  const express=require('express');
  const router=express.Router();
  const {body}=require('express-validator') 
+ const authMiddleware=require('../middlewares/auth.middleware')
 
 
 
@@ -24,6 +25,10 @@ router.post('/login',[
 ],
     captainControllers.loginCaptain
 );
+
+router.get('/profile',authMiddleware.AuthCaptain,captainControllers.getCaptainProfile);
+
+router.get('/logout',authMiddleware.AuthCaptain,captainControllers.logoutCaptain);
 
 
 
