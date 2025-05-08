@@ -1,9 +1,27 @@
-const http=require('http');
-const app=require('./app');
-const port = process.env.PORT || 3002;
+const http = require('http');
+const app = require('./app');
+const { Server } = require('socket.io'); //import
 
-const server=http.createServer(app);
+const port = process.env.PORT || 5005;
 
-server.listen(port,()=>{
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
+});
+
+io.on('connection', (socket) => { 
+    console.log(`A user connected: ${socket.id}`);
+
+    socket.on('disconnect', () => {
+        console.log(`A user disconnected: ${socket.id}`);
+    });
+});
+
+server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+module.exports = { app, io }; 
