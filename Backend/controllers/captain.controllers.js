@@ -1,18 +1,18 @@
 const captainModel = require('../models/captain.model');
- const captainService = require('../services/captain.service');
- const { validationResult } = require('express-validator');
+const captainService = require('../services/captain.service');
+const { validationResult } = require('express-validator');
+const blackListTokenModel = require('../models/blackListtoken.model');
 
-
- module.exports.registerCaptain = async (req, res,next) => {
+module.exports.registerCaptain = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    
-    const { fullname, email, password, vehicle } = req.body;
+
+    const { fullname, email, password, vehicle, vehicleType } = req.body;
     console.log(req.body);
 
-    const captainExists = await captainModel.findOne({email});
+    const captainExists = await captainModel.findOne({ email });
     if (captainExists) {
         return res.status(400).json({ error: 'Captain already exists' });
     }
@@ -30,12 +30,12 @@ const captainModel = require('../models/captain.model');
         vehicleType: vehicleType
     });
 
-    const token=captain.generateAuthToken();
+    const token = captain.generateAuthToken();
 
-    res.status(201).json({token,captain});
-}
+    res.status(201).json({ token, captain });
+};
 
-module.exports.loginCaptain = async (req, res,nect) => {
+module.exports.loginCaptain = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -53,13 +53,12 @@ module.exports.loginCaptain = async (req, res,nect) => {
         return res.status(400).json({ error: 'Invalid password' });
     }
 
-    const token=captain.generateAuthToken();
-    res.cookie('token',token);
+    const token = captain.generateAuthToken();
+    res.cookie('token', token);
 
-    res.status(200).json({token,captain});
-}
+    res.status(200).json({ token, captain });
+};
 
-// New controller function for updating location
 module.exports.updateLocation = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -72,7 +71,18 @@ module.exports.updateLocation = async (req, res, next) => {
     console.log('Latitude:', lat);
     console.log('Longitude:', long);
 
-    // for now just a success response
     res.status(200).json({ message: 'Location updated successfully' });
+};
 
+module.exports.getCaptainProfile = async (req, res, next) => {
+    res.status(200).json({ captain: req.captain });
+};
+
+module.exports.logoutCaptain = async (req, res, next) => {
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+
+    await blackListTokenModel.create({ token });
+    res.clearCookie('token');
+
+    res.status(200).json({ message: 'Logged out successfully' });
 };
